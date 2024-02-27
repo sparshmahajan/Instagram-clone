@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: follower-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: follower
+  template:
+    metadata:
+      labels:
+        app: follower
+    spec:
+      dnsPolicy: None
+      dnsConfig:
+        nameservers: ["8.8.8.8"]
+      containers:
+        - name: follower
+          image: sparshmahajan123/follower
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: follower-srv
+spec:
+  selector:
+    app: follower
+  ports:
+    - name: follower
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

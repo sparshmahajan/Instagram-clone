@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: comments-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: comments
+  template:
+    metadata:
+      labels:
+        app: comments
+    spec:
+      dnsPolicy: None
+      dnsConfig:
+        nameservers: ["8.8.8.8"]
+      containers:
+        - name: comments
+          image: sparshmahajan123/comments
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: comments-srv
+spec:
+  selector:
+    app: comments
+  ports:
+    - name: comments
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
